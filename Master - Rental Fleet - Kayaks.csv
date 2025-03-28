@@ -1,0 +1,117 @@
+Rental Fleet ,,,,,,,,,,,
+Kayaks,,,Abaco 9.5 Total,Frenzy Total,Tarpon 120 Total,Scrambler 11 Total,Gemini Total,Pro 2 Total,Malibu Two XL Total,Corona Total,
+Inventory #,98,,,,,,,,,,
+Boat Count #,111,,1,1,20,26,7,36,5,2,98
+Boat #,Serial #,,Type,Brand,Model,Primary Color,Added to Fleet,In Current Fleet,Date Removed,,Notes
+6,WEMZT11FWA212,,Single,West Marine,Abaco 9.5,Orange,2016,TRUE,,,Sell or Recycle
+7,WEMZT17KK112,,Single,West Marine,Abaco 9.5,Orange,2016,FALSE,June 2021,,Sell or Recycle// Borrowed for Hill Country Galleria Display
+14,XTC19213E717,,Single,Ocean Kayak,Frenzy,Green,2016,TRUE,,,Sell or Recycle
+34,WEMMCGS4H718,,Single,Wilderness Systems,Tarpon 120,Blue,2016,TRUE,,,
+35,WEMMCGR6H718,,Single,Wilderness Systems,Tarpon 120,Blue,2017,TRUE,,,
+36,WEMMCGSWH718,,Single,Wilderness Systems,Tarpon 120,Blue,2017,TRUE,,,
+37,WEMMGGR9H718,,Single,Wilderness Systems,Tarpon 120,Blue,2017,TRUE,,,
+38,WEMMCGWNI718,,Single,Wilderness Systems,Tarpon 120,Blue,2017,TRUE,,,
+39,WEMMCGPOH718,,Single,Wilderness Systems,Tarpon 120,Blue,2017,TRUE,,,Serial # might be WEMMCGPDH718
+40,WEMMCGUJI718,,Single,Wilderness Systems,Tarpon 120,Blue,2017,TRUE,,,
+41 - A,WEMMCGPGH718,,Single,Wilderness Systems,Tarpon 120,Blue,2017,TRUE,,,41 #1
+41 - B,WEMMCGPGH717,,Single,Wilderness Systems,Tarpon 120,Blue,2017,TRUE,,,41 #2
+42,WEMMCH4RI718,,Single,Wilderness Systems,Tarpon 120,Blue,2017,TRUE,,,
+43,WEMMCGNUH714,,Single,Wilderness Systems,Tarpon 120,Blue,2017,TRUE,,,Serial # might be WEMMCGNUH718
+44,XTC20595H718,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+45,XTC17733I718,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+46,XTC17998I718,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+47,XTC17921I718,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+48,XTC17897I718,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+49,XTC20474H718,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+50,XTC17933I718,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+51,XTC17984I718,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+52,XTC17909I718,,Single,Ocean Kayak,Scrambler 11,Green,2017,TRUE,,,
+53,XTC19787H617,,Single,Ocean Kayak,Scrambler 11,Green,2017,TRUE,,,
+54,XTC19919C717,,Single,Ocean Kayak,Scrambler 11,Green,2017,TRUE,,,
+55,XTC19655H617,,Single,Ocean Kayak,Scrambler 11,Green,2017,TRUE,,,
+56,XTC19955C717,,Single,Ocean Kayak,Scrambler 11,Green,2017,TRUE,,,
+57,XTC20092H617,,Single,Ocean Kayak,Scrambler 11,Green,2017,TRUE,,,
+58,XTC19944C717,,Single,Ocean Kayak,Scrambler 11,Green,2017,TRUE,,,
+59,XTC20115H617,,Single,Ocean Kayak,Scrambler 11,Green,2017,TRUE,,,
+60,XTC20123H617,,Single,Ocean Kayak,Scrambler 11,Green,2017,TRUE,,,
+61,XTC20099H617,,Single,Ocean Kayak,Scrambler 11,Green,2017,TRUE,,,
+62,XTC20107H617,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+63,XTC19908C717,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+64,XTC19982C717,,Single,Ocean Kayak,Scrambler 11,Green,2018,TRUE,,,
+66,KPO37617,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL
+68,XTC197068718,,Double,Ocean Kayak,Malibu Two XL,Orange,,FALSE,,,Moved Off-site 11/16/21
+69,XTC19670G718,,Double,Ocean Kayak,Malibu Two XL,Orange,,TRUE,,,Repair work done July 2021
+71,XTC19528D818,,Double,Ocean Kayak,Malibu Two XL,Orange,2018,FALSE,,,Repair work done July 2021// Moved Off-site 11/16/21
+73,XTC18025G718,,Double,Ocean Kayak,Malibu Two XL,Orange,2018,TRUE,,,
+74,XTC17557J616,,Double,Ocean Kayak,Malibu Two XL,Orange,,TRUE,,,
+76,XTC17EO6J617,,Double,Ocean Kayak,Malibu Two XL,Orange,2017,FALSE,,,
+77,XKA26894L607,,Double,Ocean Kayak,Malibu Two XL,Orange,2017,FALSE,,,
+78,XTC17657J617,,Double,Ocean Kayak,Malibu Two XL,Orange,2017,FALSE,,,
+80,KPO53052,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL
+83,KPO50923,,Double,Malibu Kayaks,Pro 2,Red,2016,FALSE,,,Retire in 2021/ Replace with XL//Moved Off-site 11/16/21
+84,KPO31502,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL
+85,KPO56524,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL
+87,KPO5349,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL
+88,KPO49284,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL// Repair work done July 2021
+89,KPO31724,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL
+90,KPO49176,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL
+91,KPO50931,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL
+92,KPO56534,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL
+93,KPO50926,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,
+94,KPO53060,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,
+95,KPO40251,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,
+97,KPO53670,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,
+98,KPO53030,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,Repair work done July 2021
+99,KPO46993,,Double,Malibu Kayaks,Pro 2,Red,2017,FALSE,,,Moved Off-site 11/16/21
+100,KPO56529,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,
+101,KPO31497,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+102,KPO31720,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+103,KPO53064,,Double,Malibu Kayaks,Pro 2,Red,2018,FALSE,,,Moved Off-site 11/16/21
+104,KPO51535,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+105,KPO54540,,Double,Malibu Kayaks,Pro 2,Red,2018,FALSE,,,Moved Off-site 11/16/21
+106,KPO31483,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+108,KPO31507,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+110,KPO31688,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+111,KPO53082,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,
+112,KPO54539,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,
+114,KPO53088,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+115,KPO53546,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+118,KPO53070,,Double,Malibu Kayaks,Pro 2,Red,2016,TRUE,,,Retire in 2021/ Replace with XL
+119,KPO51551,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,
+121,KPO46149,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,
+122,KPO53552,,Double,Malibu Kayaks,Pro 2,Red,2017,TRUE,,,
+124,KPO31470D212,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+128,KPO31716,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+131,KPO40255,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+132,KPO31488,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+134,KPO31691,,Double,Malibu Kayaks,Pro 2,Red,2018,TRUE,,,
+136,XJV11073F717,,Triple,FeelFree,Corona,Yellow,2019,TRUE,,,
+137,XJV36930B818,,Triple,FeelFree,Corona,Yellow,2019,TRUE,,,
+141,XTC17892G819,,Single,Ocean Kayak,Scrambler 11,Green,2019,TRUE,,,
+142,XTC18852G819,,Single,Ocean Kayak,Scrambler 11,Green,2019,TRUE,,,
+143,XTC17873H819,,Single,Ocean Kayak,Scrambler 11,Green,2019,TRUE,,,
+144,XTC17885H819,,Single,Ocean Kayak,Scrambler 11,Green,2019,TRUE,,,
+145,XTC18720G819,,Single,Ocean Kayak,Scrambler 11,Green,2019,TRUE,,,
+146,WEMMCJMSH819,,Single,Wilderness Systems,Tarpon 120,Blue,2018,TRUE,,,
+147,WEMMCJ9GF818,,Single,Wilderness Systems,Tarpon 120,Blue,2018,TRUE,,,
+148,WEMMCLDVE919,,Single,Wilderness Systems,Tarpon 120,Blue,2018,TRUE,,,
+149,WEMMCJK8G818,,Single,Wilderness Systems,Tarpon 120,Blue,2018,TRUE,,,
+150,,,Single,Wilderness Systems,Tarpon 120,Blue,2018,TRUE,,,Repair work done July 2021
+151,,,Single,Wilderness Systems,Tarpon 120,Blue,2018,TRUE,,,Repair work done July 2021
+152,,,Single,Wilderness Systems,Tarpon 120,Blue,2018,TRUE,,,
+153,WEMGX0EEI920,,Single,Wilderness Systems,Tarpon 120,Blue,2018,TRUE,,,
+154,WEMGX0EGI920,,Single,Wilderness Systems,Tarpon 120,Blue,2018,TRUE,,,
+155,XTC17990F919,,Double,Ocean Kayak,Malibu Two XL,Orange,2019,FALSE,,,Moved Off-site 11/16/21
+156,XTC18702H920,,Double,Ocean Kayak,Malibu Two XL,Orange,2019,TRUE,,,
+157,XTC18373H920,,Double,Ocean Kayak,Malibu Two XL,Orange,2019,TRUE,,,
+159,XJVB1366I919,,Double,FeelFree,Gemini,Red,2020,TRUE,,,
+160,XJVB1367I919,,Double,FeelFree,Gemini,Red,2020,TRUE,,,
+161,XJVB1370I919,,Double,FeelFree,Gemini,Red,2020,FALSE,,,Moved Off-site 11/16/21
+162,XJVB1374I919,,Double,FeelFree,Gemini,Red,2020,TRUE,,,
+163,XJVB1375I919,,Double,FeelFree,Gemini,Red,2020,TRUE,,,
+164,XJVB1371I919,,Double,FeelFree,Gemini,Red,2020,TRUE,,,
+165,XJVB1372I919,,Double,FeelFree,Gemini,Red,2020,TRUE,,,
+166,XJV47062B616,,Double,FeelFree,Gemini,Orange,2019,TRUE,,,
+,KPO512550616,,Double,Malibu Kayaks,Pro 2,Red,,TRUE,,,
+109,KPO53686L616,,Double,Malibu Kayaks,Pro 2,Red,,FALSE,,,Moved Off-site 11/16/21. Serial Number/Boat Number was not in sheet until this date.
+117,KPO53056J616,,,,,,,FALSE,,,Moved Off-site 11/16/21. Serial Number/Boat Number was not in sheet until this date.
