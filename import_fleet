@@ -1,0 +1,35 @@
+import csv
+import sqlite3
+
+def import_fleet(csv_file, boat_type):
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    with open(csv_file, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            c.execute('''
+                INSERT INTO fleet (
+                    boat_number, serial_number, type, brand, model,
+                    primary_color, added_to_fleet, in_current_fleet, date_removed, notes
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                row.get('Boat #'),
+                row.get('Serial #'),
+                row.get('Type') or boat_type,
+                row.get('Brand'),
+                row.get('Model'),
+                row.get('Primary Color'),
+                row.get('Added to Fleet'),
+                row.get('In Current Fleet'),
+                row.get('Date Removed'),
+                row.get('Notes')
+            ))
+
+    conn.commit()
+    conn.close()
+    print(f"Imported data from {csv_file}")
+
+if __name__ == "__main__":
+    import_fleet("/Users/ethan/Desktop/Kayak Database/Master - Rental Fleet - Kayaks.csv", "Kayak")
+    import_fleet("/Users/ethan/Desktop/Kayak Database/Master - Rental Fleet - SUPs.csv", "SUP")
