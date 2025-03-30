@@ -44,6 +44,7 @@ def init_db():
 
 @app.route('/')
 def index():
+    print("Serving index route")  # Add this line temporarily
     return render_template('report.html')
 
 @app.route('/submit', methods=['POST'])
