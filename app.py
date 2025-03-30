@@ -6,11 +6,12 @@ import os
 app = Flask(__name__)
 DB = 'database.db'
 
+# Initialize the database
 def init_db():
     conn = sqlite3.connect(DB)
     c = conn.cursor()
 
-    # Fleet table
+    # Create fleet table if needed
     c.execute('''
         CREATE TABLE IF NOT EXISTS fleet (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +28,7 @@ def init_db():
         )
     ''')
 
-    # Damage report table
+    # Create damage reports table
     c.execute('''
         CREATE TABLE IF NOT EXISTS broken_boats (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,11 +43,13 @@ def init_db():
     conn.commit()
     conn.close()
 
+# ✅ Main route — renders report.html
 @app.route('/')
 def index():
-    print("Flask is serving the index route")  # Add this line temporarily
+    print("💡 Flask is serving the index route")  # Debug print
     return render_template('report.html')
 
+# ✅ POST route to handle submissions
 @app.route('/submit', methods=['POST'])
 def submit():
     boat_id = request.form['boat_id']
@@ -63,9 +66,13 @@ def submit():
 
     return redirect('/')
 
+# ✅ Test route to confirm Flask is working
+@app.route('/test')
+def test():
+    return "Flask is working 🎉"
+
+# ✅ Start the Flask server on 0.0.0.0 with Render's PORT
 if __name__ == '__main__':
     init_db()
-
-    # ✅ This is the part Render needs:
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
