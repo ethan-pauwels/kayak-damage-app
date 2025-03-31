@@ -43,8 +43,13 @@ def init_db():
     conn.commit()
     conn.close()
 
-# ✅ Main route — renders report.html
 @app.route('/')
+def index():
+    return redirect('/run')
+
+
+# ✅ Main route — renders report.html
+@app.route('/run')
 def index():
     print("💡 Flask is serving the index route")  # Debug print
     return render_template('report.html')
