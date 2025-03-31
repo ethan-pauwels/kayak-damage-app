@@ -50,7 +50,7 @@ def index():
 
 # ✅ Main route — renders report.html
 @app.route('/run')
-def index():
+def run_page():
     print("💡 Flask is serving the index route")  # Debug print
     return render_template('report.html')
 
