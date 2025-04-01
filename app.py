@@ -28,7 +28,7 @@ def ensure_status_column():
         cursor.execute('ALTER TABLE fleet ADD COLUMN status TEXT DEFAULT "Active"')
         print("✅ 'status' column added to fleet table")
     except sqlite3.OperationalError:
-        pass  # Column likely already exists
+        pass  # Column already exists
     conn.commit()
     conn.close()
 
@@ -90,9 +90,9 @@ def fleet():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute('''
-        SELECT "Boat ID", "Serial Number", Category, status
+        SELECT "Boat ID", "Serial Number", status
         FROM fleet
-        ORDER BY Category, "Boat ID"
+        ORDER BY "Boat ID"
     ''')
     boats = cursor.fetchall()
     conn.close()
