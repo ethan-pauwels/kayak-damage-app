@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Fleet Overview</title>
-  <link rel="stylesheet" href="/static/style.css">
-  <style>
-    table {
-      width: 90%;
-      margin: 2rem auto;
-      border-collapse: collapse;
-      font-family: Arial, sans-serif;
-    }
-    th, td {
-      padding: 12px 15px;
-      text-align: left;
-    }
-    th {
-      background-color: #333;
-      color: white;
-    }
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-    .status-active {
-      color: green;
-      font-weight: bold;
-    }
-    .status-broken {
-      color: red;
-      font-weight: bold;
-    }
-    h2 {
-      text-align: center;
-      font-size: 2rem;
-      margin-top: 2rem;
-    }
-  </style>
+    <title>Fleet Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        .status-active {
+            background-color: #c8f7c5;
+            font-weight: bold;
+        }
+        .status-damaged {
+            background-color: #f7c5c5;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <h2>🛶 Fleet Overview</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Brand</th>
-        <th>Model</th>
-        <th>Primary Color</th>
-        <th>Added to Fleet</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for boat in fleet %}
-      <tr>
-        <td>{{ boat[2] }}</td>
-        <td>{{ boat[3] }}</td>
-        <td>{{ boat[4] }}</td>
-        <td>{{ boat[5] }}</td>
-        <td>{{ boat[6] }}</td>
-        <td class="{{ 'status-active' if boat[7] == 'Active' else 'status-broken' }}">{{ boat[7] }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <h1>🛶 Fleet Overview</h1>
+    <table>
+        <tr>
+            <th>Boat ID</th>
+            <th>Serial Number</th>
+            <th>Type</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Primary Color</th>
+            <th>Added to Fleet</th>
+            <th>Status</th>
+        </tr>
+        {% for boat in fleet %}
+        <tr>
+            <td>{{ boat.boat_id }}</td>
+            <td>{{ boat.serial_number }}</td>
+            <td>{{ boat.type }}</td>
+            <td>{{ boat.brand }}</td>
+            <td>{{ boat.model }}</td>
+            <td>{{ boat.primary_color }}</td>
+            <td>{{ boat.added_to_fleet }}</td>
+            <td class="status-{{ 'active' if boat.status == 'Active' else 'damaged' }}">{{ boat.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
