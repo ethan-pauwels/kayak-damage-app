@@ -52,6 +52,15 @@ def submit():
 
     return "✅ Damage report submitted successfully!"
 
+@app.route('/reports')
+def reports():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT boat_id, description, reported_by, timestamp FROM damage_reports ORDER BY timestamp DESC')
+    reports = cursor.fetchall()
+    conn.close()
+    return render_template('reports.html', reports=reports)
+
 # Run app on Render's assigned port
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
