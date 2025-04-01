@@ -1,30 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Fleet Overview</title>
-    <link rel="stylesheet" href="/static/style.css">
+  <title>Fleet Overview</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    table {
+      width: 90%;
+      margin: 2rem auto;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+    th {
+      background-color: #333;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .status-active {
+      color: green;
+      font-weight: bold;
+    }
+    .status-broken {
+      color: red;
+      font-weight: bold;
+    }
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-top: 2rem;
+    }
+  </style>
 </head>
 <body>
-    <h1>🛶 Fleet Overview</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Boat ID</th>
-                <th>Serial Number</th>
-                <th>Type</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for boat in fleet_data %}
-            <tr style="background-color: {% if boat[3] == 'Broken' %}#ffcccc{% else %}#ccffcc{% endif %};">
-                <td>{{ boat[0] }}</td>
-                <td>{{ boat[1] }}</td>
-                <td>{{ boat[2] }}</td>
-                <td>{{ boat[3] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+  <h2>🛶 Fleet Overview</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Primary Color</th>
+        <th>Added to Fleet</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for boat in fleet %}
+      <tr>
+        <td>{{ boat[2] }}</td>
+        <td>{{ boat[3] }}</td>
+        <td>{{ boat[4] }}</td>
+        <td>{{ boat[5] }}</td>
+        <td>{{ boat[6] }}</td>
+        <td class="{{ 'status-active' if boat[7] == 'Active' else 'status-broken' }}">{{ boat[7] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </body>
 </html>

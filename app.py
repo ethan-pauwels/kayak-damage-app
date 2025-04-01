@@ -91,12 +91,20 @@ def fleet():
     cursor = conn.cursor()
 
     cursor.execute('''
-        SELECT boat_id, serial_number, type, status FROM fleet
+        SELECT 
+            type, 
+            brand, 
+            model, 
+            primary_color, 
+            added_to_fleet, 
+            status 
+        FROM fleet
     ''')
     fleet_data = cursor.fetchall()
     conn.close()
 
-    return render_template('fleet.html', fleet_data=fleet_data)
+    return render_template('fleet.html', fleet=fleet_data)
+
 
 # --- App runner ---
 if __name__ == '__main__':
