@@ -89,14 +89,14 @@ def reports():
 def fleet():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
+
     cursor.execute('''
-        SELECT "Boat ID", "Serial Number", status
-        FROM fleet
-        ORDER BY "Boat ID"
+        SELECT boat_id, serial_number, type, status FROM fleet
     ''')
-    boats = cursor.fetchall()
+    fleet_data = cursor.fetchall()
     conn.close()
-    return render_template('fleet.html', boats=boats)
+
+    return render_template('fleet.html', fleet_data=fleet_data)
 
 # --- App runner ---
 if __name__ == '__main__':
