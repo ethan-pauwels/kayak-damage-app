@@ -20,19 +20,31 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db()
+# --- Ensure fleet table has a 'status' column ---
+def ensure_status_column():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    try:
+        cursor.execute('ALTER TABLE fleet ADD COLUMN status TEXT DEFAULT "Active"')
+        print("✅ 'status' column added to fleet table")
+    except sqlite3.OperationalError:
+        pass  # Column likely already exists
+    conn.commit()
+    conn.close()
 
-# Route: Health check
+# Run setup on startup
+init_db()
+ensure_status_column()
+
+# --- Routes ---
 @app.route('/test')
 def test():
     return "✅ Flask is working"
 
-# Route: Show damage report form
 @app.route('/')
 def index():
     return render_template('report.html')
 
-# Route: Handle form submission
 @app.route('/submit', methods=['POST'])
 def submit():
     boat_id = request.form['boat_id']
@@ -42,13 +54,13 @@ def submit():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # Insert damage report into table
+    # Insert into damage_reports
     cursor.execute('''
         INSERT INTO damage_reports (boat_id, description, reported_by)
         VALUES (?, ?, ?)
     ''', (boat_id, description, reported_by))
 
-    # Mark the boat as Broken in the fleet table
+    # Update fleet status
     cursor.execute('''
         UPDATE fleet
         SET status = 'Broken'
@@ -60,7 +72,6 @@ def submit():
 
     return "✅ Damage report submitted and boat marked as Broken!"
 
-# Route: View all damage reports
 @app.route('/reports')
 def reports():
     conn = sqlite3.connect('database.db')
@@ -74,7 +85,6 @@ def reports():
     conn.close()
     return render_template('reports.html', reports=reports)
 
-# Route: View the full fleet with status
 @app.route('/fleet')
 def fleet():
     conn = sqlite3.connect('database.db')
@@ -88,7 +98,7 @@ def fleet():
     conn.close()
     return render_template('fleet.html', boats=boats)
 
-# Run app (Render uses PORT env var)
+# --- App runner ---
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
