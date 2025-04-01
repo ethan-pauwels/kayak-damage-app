@@ -1,29 +1,56 @@
 import sqlite3
 import pandas as pd
 
-# === Load CSVs ===
-kayaks = pd.read_csv("Master - Rental Fleet - Kayaks.csv")
-sups = pd.read_csv("Master - Rental Fleet - SUPs.csv")
+# Load data starting from row 5 (zero-indexed, so skip first 4)
+kayaks_df = pd.read_csv("Master - Rental Fleet - Kayaks.csv", skiprows=4)
+sups_df = pd.read_csv("Master - Rental Fleet - SUPs.csv", skiprows=4)
 
-# === Tag each type ===
-kayaks["Category"] = "Kayak"
-sups["Category"] = "SUP"
+# Add status column to both and set to Active
+kayaks_df["status"] = "Active"
+sups_df["status"] = "Active"
 
-# === Combine the two ===
-fleet = pd.concat([kayaks, sups])
-fleet.reset_index(drop=True, inplace=True)
+# Add a column to indicate the type
+kayaks_df["type"] = "Kayak"
+sups_df["type"] = "SUP"
 
-# === Add a status column ===
-fleet["status"] = "Active"
+# Rename columns to match what we expect in the app
+kayaks_df.rename(columns={
+    "Boat #": "boat_id",
+    "Serial #": "serial_number"
+}, inplace=True)
 
-# === Connect to SQLite and create database ===
+sups_df.rename(columns={
+    "Boat #": "boat_id",
+    "Serial #": "serial_number"
+}, inplace=True)
+
+# Keep only the relevant columns
+kayaks_df = kayaks_df[["boat_id", "serial_number", "type", "status"]]
+sups_df = sups_df[["boat_id", "serial_number", "type", "status"]]
+
+# Combine both fleets
+fleet_df = pd.concat([kayaks_df, sups_df])
+
+# Save to SQLite database
 conn = sqlite3.connect("database.db")
+cursor = conn.cursor()
 
-# === Save the fleet table ===
-fleet.to_sql("fleet", conn, if_exists="replace", index=False)
+# Reset the fleet table
+cursor.execute("DROP TABLE IF EXISTS fleet")
+cursor.execute("""
+    CREATE TABLE fleet (
+        boat_id TEXT,
+        serial_number TEXT,
+        type TEXT,
+        status TEXT
+    )
+""")
 
-# === Create damage_reports table if it doesn't exist ===
-conn.execute("""
+# Save data
+fleet_df.to_sql("fleet", conn, if_exists="append", index=False)
+
+# Create the damage_reports table if not exists
+cursor.execute("""
     CREATE TABLE IF NOT EXISTS damage_reports (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         boat_id TEXT,
