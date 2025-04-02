@@ -5,14 +5,9 @@ import pandas as pd
 kayaks_df = pd.read_csv('Master - Rental Fleet - Kayaks.csv', header=4)
 sups_df = pd.read_csv('Master - Rental Fleet - SUPs.csv', header=4)
 
-# Add 'type' column
-def classify_kayak_type(model):
-    if isinstance(model, str) and "Double" in model:
-        return "Double Kayak"
-    return "Single Kayak"
-
-kayaks_df['type'] = kayaks_df['Model'].apply(classify_kayak_type)
-sups_df['type'] = 'SUP'  # All SUPs are just SUPs
+# Use the 'Type' column directly from the CSVs
+kayaks_df['type'] = kayaks_df['Type']
+sups_df['type'] = sups_df['Type']
 
 # Combine the two DataFrames
 fleet_df = pd.concat([kayaks_df, sups_df], ignore_index=True)
@@ -31,9 +26,9 @@ fleet_df = fleet_df.rename(columns={
 fleet_df = fleet_df[['boat_id', 'serial_number', 'type', 'brand', 'model', 'primary_color', 'added_to_fleet']]
 fleet_df['status'] = 'Active'  # Default status for all boats
 
-# Print the DataFrame to verify it's loaded correctly
+# Print preview to confirm
 print("✅ Preview of fleet data to be inserted:")
-print(fleet_df.head())
+print(fleet_df.head(10))
 
 # Connect to SQLite
 conn = sqlite3.connect('database.db')
@@ -63,17 +58,16 @@ cursor.execute('''
     )
 ''')
 
-# Optional: clear existing fleet data to avoid duplicates
+# Optional: Clear existing data
 cursor.execute('DELETE FROM fleet')
 
-# Insert fleet data
+# Insert data
 cursor.executemany('''
     INSERT OR REPLACE INTO fleet 
     (boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 ''', fleet_df.values.tolist())
 
-# Finalize
 conn.commit()
 conn.close()
 
