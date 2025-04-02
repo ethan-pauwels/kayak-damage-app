@@ -11,6 +11,7 @@ def report_form():
 @app.route('/submit', methods=['POST'])
 def submit():
     boat_id = request.form['boat_id']
+    boat_type = request.form['boat_type']
     description = request.form['description']
     reported_by = request.form['reported_by']
     date_reported = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -18,16 +19,17 @@ def submit():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # Insert damage report
+    # Insert damage report (record includes type so we distinguish between SUP #7 vs Kayak #7)
     cursor.execute('''
         INSERT INTO damage_reports (boat_id, description, reported_by, date_reported)
         VALUES (?, ?, ?, ?)
-    ''', (boat_id, description, reported_by, date_reported))
+    ''', (f"{boat_type} {boat_id}", description, reported_by, date_reported))
 
     # Update fleet status to Damaged
     cursor.execute('''
-        UPDATE fleet SET status = 'Damaged' WHERE boat_id = ?
-    ''', (boat_id,))
+        UPDATE fleet SET status = 'Damaged' WHERE boat_id = ? AND type = ?
+    ''', (boat_id, boat_type))
+
     conn.commit()
     conn.close()
     return "✅ Damage report submitted successfully!"
@@ -52,13 +54,24 @@ def fleet():
         ''')
 
     fleet_data = cursor.fetchall()
-
-    # Get distinct types for dropdown filter
     cursor.execute('SELECT DISTINCT type FROM fleet')
     types = [row[0] for row in cursor.fetchall()]
 
     conn.close()
     return render_template('fleet.html', fleet=fleet_data, types=types)
+
+@app.route('/reports')
+def view_reports():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT id, boat_id, description, reported_by, date_reported
+        FROM damage_reports
+        ORDER BY date_reported DESC
+    ''')
+    reports = cursor.fetchall()
+    conn.close()
+    return render_template('reports.html', reports=reports)
 
 @app.route('/delete-mode')
 def delete_mode():
@@ -71,7 +84,6 @@ def delete_mode():
     fleet_data = cursor.fetchall()
     conn.close()
     return render_template('delete_mode.html', fleet=fleet_data)
-
 
 @app.route('/fix/<boat_id>', methods=['POST', 'GET'])
 def mark_fixed(boat_id):
@@ -150,7 +162,7 @@ def classify_type(type_val, model):
         return "Double Kayak" if type_val.lower() == "kayak" else type_val
     if type_val.lower() == "kayak":
         return "Single Kayak"
-    return type_val  # For SUPs or other types
+    return type_val
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)

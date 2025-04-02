@@ -3,33 +3,69 @@
 <head>
   <title>Damage Reports</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ccc; }
-    th { background-color: #f4f4f4; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: #eaeaea;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
   </style>
 </head>
 <body>
-  <h2>📋 Submitted Damage Reports</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Boat ID</th>
-        <th>Description</th>
-        <th>Reported By</th>
-        <th>Timestamp</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for report in reports %}
-      <tr>
-        <td>{{ report[0] }}</td>
-        <td>{{ report[1] }}</td>
-        <td>{{ report[2] }}</td>
-        <td>{{ report[3] }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="container">
+    <h2>📋 Submitted Damage Reports</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Report ID</th>
+          <th>Boat ID (with Type)</th>
+          <th>Description</th>
+          <th>Reported By</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in reports %}
+        <tr>
+          <td>{{ report[0] }}</td>
+          <td>{{ report[1] }}</td>
+          <td>{{ report[2] }}</td>
+          <td>{{ report[3] }}</td>
+          <td>{{ report[4] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>
