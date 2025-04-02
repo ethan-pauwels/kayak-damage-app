@@ -38,11 +38,12 @@ def fleet():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute('''
-        SELECT boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status FROM fleet
+        SELECT boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status
+        FROM fleet
     ''')
-    boats = cursor.fetchall()
+    fleet_data = cursor.fetchall()
     conn.close()
-    return render_template('fleet.html', boats=boats)
+    return render_template('fleet.html', fleet=fleet_data)
 
 @app.route('/fix/<boat_id>', methods=['POST', 'GET'])
 def mark_fixed(boat_id):
