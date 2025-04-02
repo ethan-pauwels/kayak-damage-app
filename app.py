@@ -33,17 +33,30 @@ def submit():
     conn.close()
     return "✅ Damage report submitted successfully!"
 
+
 @app.route('/fleet')
 def fleet():
+    boat_type = request.args.get('type')  # Grab type from query string
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute('''
-        SELECT boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status
-        FROM fleet
-    ''')
+
+    if boat_type:
+        cursor.execute('''
+            SELECT boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status 
+            FROM fleet
+            WHERE type = ?
+        ''', (boat_type,))
+    else:
+        cursor.execute('''
+            SELECT boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status 
+            FROM fleet
+        ''')
+
     fleet_data = cursor.fetchall()
     conn.close()
+
     return render_template('fleet.html', fleet=fleet_data)
+
 
 @app.route('/fix/<boat_id>', methods=['POST', 'GET'])
 def mark_fixed(boat_id):
