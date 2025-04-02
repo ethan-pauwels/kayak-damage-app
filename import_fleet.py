@@ -6,8 +6,13 @@ kayaks_df = pd.read_csv('Master - Rental Fleet - Kayaks.csv', header=4)
 sups_df = pd.read_csv('Master - Rental Fleet - SUPs.csv', header=4)
 
 # Add 'type' column
-kayaks_df['type'] = 'Kayak'
-sups_df['type'] = 'SUP'
+def classify_kayak_type(model):
+    if isinstance(model, str) and "Double" in model:
+        return "Double Kayak"
+    return "Single Kayak"
+
+kayaks_df['type'] = kayaks_df['Model'].apply(classify_kayak_type)
+sups_df['type'] = 'SUP'  # All SUPs are just SUPs
 
 # Combine the two DataFrames
 fleet_df = pd.concat([kayaks_df, sups_df], ignore_index=True)

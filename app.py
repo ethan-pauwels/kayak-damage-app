@@ -28,24 +28,23 @@ def submit():
     cursor.execute('''
         UPDATE fleet SET status = 'Damaged' WHERE boat_id = ?
     ''', (boat_id,))
-
     conn.commit()
     conn.close()
     return "✅ Damage report submitted successfully!"
 
-
 @app.route('/fleet')
 def fleet():
-    boat_type = request.args.get('type')  # Grab type from query string
+    boat_type_filter = request.args.get('type')
+
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    if boat_type:
+    if boat_type_filter:
         cursor.execute('''
             SELECT boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status 
             FROM fleet
             WHERE type = ?
-        ''', (boat_type,))
+        ''', (boat_type_filter,))
     else:
         cursor.execute('''
             SELECT boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status 
@@ -53,10 +52,13 @@ def fleet():
         ''')
 
     fleet_data = cursor.fetchall()
+
+    # Get distinct types for dropdown filter
+    cursor.execute('SELECT DISTINCT type FROM fleet')
+    types = [row[0] for row in cursor.fetchall()]
+
     conn.close()
-
-    return render_template('fleet.html', fleet=fleet_data)
-
+    return render_template('fleet.html', fleet=fleet_data, types=types)
 
 @app.route('/fix/<boat_id>', methods=['POST', 'GET'])
 def mark_fixed(boat_id):
@@ -73,7 +75,7 @@ def add_boat():
         boat_data = (
             request.form['boat_id'],
             request.form['serial_number'],
-            request.form['type'],
+            classify_type(request.form['type'], request.form['model']),
             request.form['brand'],
             request.form['model'],
             request.form['primary_color'],
@@ -96,13 +98,14 @@ def update_boat(boat_id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     if request.method == 'POST':
+        updated_type = classify_type(request.form['type'], request.form['model'])
         cursor.execute('''
             UPDATE fleet
             SET serial_number = ?, type = ?, brand = ?, model = ?, primary_color = ?, added_to_fleet = ?, status = ?
             WHERE boat_id = ?
         ''', (
             request.form['serial_number'],
-            request.form['type'],
+            updated_type,
             request.form['brand'],
             request.form['model'],
             request.form['primary_color'],
@@ -119,7 +122,7 @@ def update_boat(boat_id):
     conn.close()
     return render_template('update_boat.html', boat=boat)
 
-@app.route('/delete/<boat_id>', methods=['GET'])
+@app.route('/delete/<boat_id>', methods=['POST'])
 def delete_boat(boat_id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
@@ -127,6 +130,14 @@ def delete_boat(boat_id):
     conn.commit()
     conn.close()
     return redirect(url_for('fleet'))
+
+def classify_type(type_val, model):
+    model_lower = model.lower()
+    if "tandem" in model_lower or "double" in model_lower or "2-person" in model_lower:
+        return "Double Kayak" if type_val.lower() == "kayak" else type_val
+    if type_val.lower() == "kayak":
+        return "Single Kayak"
+    return type_val  # For SUPs or other types
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)

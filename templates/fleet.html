@@ -13,6 +13,50 @@
             color: #333;
         }
 
+        .filter-form {
+            margin-bottom: 20px;
+        }
+
+        .filter-form select {
+            padding: 6px;
+            font-size: 16px;
+        }
+
+        .filter-form button {
+            padding: 6px 12px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .add-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: bold;
+            background-color: #28a745;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .add-link:hover {
+            background-color: #1f8b3a;
+        }
+
+        .delete-button {
+            background-color: darkred;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .delete-button:hover {
+            background-color: #aa0000;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -51,23 +95,24 @@
         a:hover, button:hover {
             background-color: #0056b3;
         }
-
-        .add-link {
-            display: inline-block;
-            margin-bottom: 15px;
-            font-weight: bold;
-            background-color: #28a745;
-        }
-
-        .add-link:hover {
-            background-color: #1f8b3a;
-        }
     </style>
 </head>
 <body>
     <h2>Rental Fleet Overview</h2>
 
+    <form class="filter-form" method="get" action="/fleet">
+        <label for="type">Filter by Type:</label>
+        <select name="type" id="type">
+            <option value="">All</option>
+            <option value="Single Kayak">Single Kayak</option>
+            <option value="Double Kayak">Double Kayak</option>
+            <option value="SUP">SUP</option>
+        </select>
+        <button type="submit">Apply</button>
+    </form>
+
     <a href="/add" class="add-link">➕ Add a New Boat</a>
+    <a href="/delete-mode" class="delete-button">💣 Enter Delete Mode</a>
 
     <table>
         <thead>
@@ -99,7 +144,6 @@
                         <button type="submit">Fix</button>
                     </form>
                     <a href="/update/{{ boat[0] }}">Update</a>
-                    <a href="/delete/{{ boat[0] }}" onclick="return confirm('Are you sure you want to delete this boat?');">Delete</a>
                 </td>
             </tr>
             {% endfor %}
