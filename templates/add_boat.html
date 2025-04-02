@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Boat</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Add a New Boat</h2>
+    <form method="POST">
+        <label>Boat ID:</label><br>
+        <input type="text" name="boat_id" required><br>
+
+        <label>Serial Number:</label><br>
+        <input type="text" name="serial_number"><br>
+
+        <label>Type:</label><br>
+        <input type="text" name="type"><br>
+
+        <label>Brand:</label><br>
+        <input type="text" name="brand"><br>
+
+        <label>Model:</label><br>
+        <input type="text" name="model"><br>
+
+        <label>Primary Color:</label><br>
+        <input type="text" name="primary_color"><br>
+
+        <label>Added to Fleet:</label><br>
+        <input type="date" name="added_to_fleet"><br>
+
+        <label>Status:</label><br>
+        <select name="status">
+            <option value="Active">Active</option>
+            <option value="Damaged">Damaged</option>
+        </select><br><br>
+
+        <button type="submit">Add Boat</button>
+    </form>
+</body>
+</html>

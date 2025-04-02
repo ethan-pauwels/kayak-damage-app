@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Boat</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Update Boat Info</h2>
+    <form method="POST">
+        <label>Serial Number:</label><br>
+        <input type="text" name="serial_number" value="{{ boat[1] }}"><br>
+
+        <label>Type:</label><br>
+        <input type="text" name="type" value="{{ boat[2] }}"><br>
+
+        <label>Brand:</label><br>
+        <input type="text" name="brand" value="{{ boat[3] }}"><br>
+
+        <label>Model:</label><br>
+        <input type="text" name="model" value="{{ boat[4] }}"><br>
+
+        <label>Primary Color:</label><br>
+        <input type="text" name="primary_color" value="{{ boat[5] }}"><br>
+
+        <label>Added to Fleet:</label><br>
+        <input type="date" name="added_to_fleet" value="{{ boat[6] }}"><br>
+
+        <label>Status:</label><br>
+        <select name="status">
+            <option value="Active" {% if boat[7] == 'Active' %}selected{% endif %}>Active</option>
+            <option value="Damaged" {% if boat[7] == 'Damaged' %}selected{% endif %}>Damaged</option>
+        </select><br><br>
+
+        <button type="submit">Update Boat</button>
+    </form>
+</body>
+</html>
