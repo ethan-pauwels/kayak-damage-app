@@ -1,25 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Report Broken Boat</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>Report Damaged Boat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f9f9f9;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .log-button {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .log-button:hover {
+      background-color: #1e7e34;
+    }
+  </style>
 </head>
 <body>
-  <h2>Report a Damaged Kayak</h2>
-
   <form method="POST" action="/submit">
-    <label for="boat_id">Boat ID:</label>
-    <input type="text" id="boat_id" name="boat_id" required />
+    <h2>🚨 Report a Damaged Boat</h2>
 
-    <label for="description">Description of Damage:</label>
-    <textarea id="description" name="description" rows="4" required></textarea>
+    <label for="boat_id">Boat ID:</label>
+    <input type="text" name="boat_id" required>
+
+    <label for="boat_type">Boat Type:</label>
+    <select name="boat_type" required>
+      <option value="">-- Select Type --</option>
+      <option value="Single Kayak">Single Kayak</option>
+      <option value="Double Kayak">Double Kayak</option>
+      <option value="SUP">SUP</option>
+    </select>
+
+    <label for="description">Damage Description:</label>
+    <textarea name="description" rows="4" required></textarea>
 
     <label for="reported_by">Your Name:</label>
-    <input type="text" id="reported_by" name="reported_by" />
+    <input type="text" name="reported_by" required>
 
     <button type="submit">Submit Report</button>
+
+    <a href="/reports" class="log-button">📋 Damaged Boat Log</a>
   </form>
 </body>
 </html>
