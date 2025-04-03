@@ -4,6 +4,13 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+def normalize_type(full_type):
+    if full_type == "Single Kayak":
+        return "Single"
+    elif full_type == "Double Kayak":
+        return "Double"
+    return full_type  # SUP remains the same
+
 @app.route('/')
 def report_form():
     return render_template('report.html')
@@ -11,7 +18,8 @@ def report_form():
 @app.route('/submit', methods=['POST'])
 def submit():
     boat_id = request.form['boat_id']
-    boat_type = request.form['boat_type']
+    boat_type_raw = request.form['boat_type']
+    boat_type = normalize_type(boat_type_raw)
     description = request.form['description']
     reported_by = request.form['reported_by']
     date_reported = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -19,11 +27,11 @@ def submit():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # Insert damage report (record includes type so we distinguish between SUP #7 vs Kayak #7)
+    # Insert damage report
     cursor.execute('''
         INSERT INTO damage_reports (boat_id, description, reported_by, date_reported)
         VALUES (?, ?, ?, ?)
-    ''', (f"{boat_type} {boat_id}", description, reported_by, date_reported))
+    ''', (f"{boat_type_raw} {boat_id}", description, reported_by, date_reported))
 
     # Update fleet status to Damaged
     cursor.execute('''
@@ -37,16 +45,16 @@ def submit():
 @app.route('/fleet')
 def fleet():
     boat_type_filter = request.args.get('type')
-
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
     if boat_type_filter:
+        normalized_type = normalize_type(boat_type_filter)
         cursor.execute('''
             SELECT boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status 
             FROM fleet
             WHERE type = ?
-        ''', (boat_type_filter,))
+        ''', (normalized_type,))
     else:
         cursor.execute('''
             SELECT boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status 
@@ -56,8 +64,8 @@ def fleet():
     fleet_data = cursor.fetchall()
     cursor.execute('SELECT DISTINCT type FROM fleet')
     types = [row[0] for row in cursor.fetchall()]
-
     conn.close()
+
     return render_template('fleet.html', fleet=fleet_data, types=types)
 
 @app.route('/reports')
@@ -97,10 +105,12 @@ def mark_fixed(boat_id):
 @app.route('/add', methods=['GET', 'POST'])
 def add_boat():
     if request.method == 'POST':
+        raw_type = request.form['type']
+        model = request.form['model']
         boat_data = (
             request.form['boat_id'],
             request.form['serial_number'],
-            classify_type(request.form['type'], request.form['model']),
+            classify_type(raw_type, model),
             request.form['brand'],
             request.form['model'],
             request.form['primary_color'],
@@ -123,7 +133,9 @@ def update_boat(boat_id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     if request.method == 'POST':
-        updated_type = classify_type(request.form['type'], request.form['model'])
+        raw_type = request.form['type']
+        model = request.form['model']
+        updated_type = classify_type(raw_type, model)
         cursor.execute('''
             UPDATE fleet
             SET serial_number = ?, type = ?, brand = ?, model = ?, primary_color = ?, added_to_fleet = ?, status = ?
@@ -132,7 +144,7 @@ def update_boat(boat_id):
             request.form['serial_number'],
             updated_type,
             request.form['brand'],
-            request.form['model'],
+            model,
             request.form['primary_color'],
             request.form['added_to_fleet'],
             request.form['status'],
@@ -159,10 +171,10 @@ def delete_boat(boat_id):
 def classify_type(type_val, model):
     model_lower = model.lower()
     if "tandem" in model_lower or "double" in model_lower or "2-person" in model_lower:
-        return "Double Kayak" if type_val.lower() == "kayak" else type_val
+        return "Double"
     if type_val.lower() == "kayak":
-        return "Single Kayak"
-    return type_val
+        return "Single"
+    return type_val  # SUP or other
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
