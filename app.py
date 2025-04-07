@@ -1,6 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file
 import sqlite3
 from datetime import datetime
+import pandas as pd
+import zipfile
+import io
 
 app = Flask(__name__)
 
@@ -9,7 +12,7 @@ def normalize_type(full_type):
         return "Single"
     elif full_type == "Double Kayak":
         return "Double"
-    return full_type  # SUP remains the same
+    return full_type
 
 @app.route('/')
 def report_form():
@@ -26,14 +29,11 @@ def submit():
 
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-
-    # Insert damage report
     cursor.execute('''
         INSERT INTO damage_reports (boat_id, description, reported_by, date_reported)
         VALUES (?, ?, ?, ?)
     ''', (f"{boat_type_raw} {boat_id}", description, reported_by, date_reported))
 
-    # Update fleet status to Damaged
     cursor.execute('''
         UPDATE fleet SET status = 'Damaged' WHERE boat_id = ? AND type = ?
     ''', (boat_id, boat_type))
@@ -168,13 +168,37 @@ def delete_boat(boat_id):
     conn.close()
     return redirect(url_for('fleet'))
 
+@app.route('/export')
+def export_data():
+    now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    zip_buffer = io.BytesIO()
+
+    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+        conn = sqlite3.connect('database.db')
+        
+        # Export fleet
+        fleet_df = pd.read_sql_query("SELECT * FROM fleet", conn)
+        fleet_csv = fleet_df.to_csv(index=False)
+        zip_file.writestr(f"fleet_export_{now}.csv", fleet_csv)
+        
+        # Export damage reports
+        report_df = pd.read_sql_query("SELECT * FROM damage_reports", conn)
+        report_csv = report_df.to_csv(index=False)
+        zip_file.writestr(f"damage_reports_export_{now}.csv", report_csv)
+
+        conn.close()
+
+    zip_buffer.seek(0)
+    return send_file(zip_buffer, mimetype='application/zip',
+                     download_name=f"fleet_exports_{now}.zip", as_attachment=True)
+
 def classify_type(type_val, model):
     model_lower = model.lower()
     if "tandem" in model_lower or "double" in model_lower or "2-person" in model_lower:
         return "Double"
     if type_val.lower() == "kayak":
         return "Single"
-    return type_val  # SUP or other
+    return type_val
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)

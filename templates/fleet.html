@@ -28,28 +28,37 @@
             margin-left: 10px;
         }
 
-        .add-link {
+        .add-link, .export-link, .delete-button {
             display: inline-block;
             margin-bottom: 15px;
             font-weight: bold;
-            background-color: #28a745;
-            color: white;
             padding: 6px 12px;
             border-radius: 4px;
             text-decoration: none;
+        }
+
+        .add-link {
+            background-color: #28a745;
+            color: white;
         }
 
         .add-link:hover {
             background-color: #1f8b3a;
         }
 
+        .export-link {
+            background-color: #ffc107;
+            color: black;
+            margin-left: 10px;
+        }
+
+        .export-link:hover {
+            background-color: #e0a800;
+        }
+
         .delete-button {
             background-color: darkred;
             color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
             margin-left: 10px;
         }
 
@@ -112,6 +121,7 @@
     </form>
 
     <a href="/add" class="add-link">➕ Add a New Boat</a>
+    <a href="/export" class="export-link">📁 Export Logs</a>
     <a href="/delete-mode" class="delete-button">💣 Enter Delete Mode</a>
 
     <table>
