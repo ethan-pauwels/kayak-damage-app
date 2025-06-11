@@ -105,27 +105,32 @@ def mark_fixed(boat_id):
 @app.route('/add', methods=['GET', 'POST'])
 def add_boat():
     if request.method == 'POST':
-        boat_id = request.form['boat_id']
+        boat_id = request.form['boat_id'].strip()
+        model = request.form.get('model', '').strip()
+        raw_type = request.form.get('type', '').strip()
+        boat_type = classify_type(raw_type, model)
 
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
 
-        # Check if boat_id already exists
-        cursor.execute("SELECT 1 FROM fleet WHERE boat_id = ?", (boat_id,))
+        # Case-insensitive check for existing boat_id + type
+        cursor.execute(
+            "SELECT 1 FROM fleet WHERE LOWER(boat_id) = ? AND LOWER(type) = ?",
+            (boat_id.lower(), boat_type.lower())
+        )
         if cursor.fetchone():
             conn.close()
-            return "❌ Error: Boat ID already exists. Please choose a different ID."
+            return "❌ Error: This Boat ID and Type already exist. Try a different combo."
 
-        # Proceed if it's a new ID
         boat_data = (
             boat_id,
-            request.form.get('serial_number', ''),
-            classify_type(request.form.get('type', ''), request.form.get('model', '')),
-            request.form.get('brand', ''),
-            request.form.get('model', ''),
-            request.form.get('primary_color', ''),
-            request.form.get('added_to_fleet', ''),
-            request.form.get('status', 'Active')
+            request.form.get('serial_number', '').strip(),
+            boat_type,
+            request.form.get('brand', '').strip(),
+            model,
+            request.form.get('primary_color', '').strip(),
+            request.form.get('added_to_fleet', '').strip(),
+            request.form.get('status', 'Active').strip()
         )
 
         cursor.execute('''
@@ -138,7 +143,6 @@ def add_boat():
         return redirect(url_for('fleet'))
 
     return render_template('add_boat.html')
-
 
 @app.route('/update/<boat_id>', methods=['GET', 'POST'])
 def update_boat(boat_id):
@@ -203,12 +207,16 @@ def export_data():
                      download_name=f"fleet_exports_{now}.zip", as_attachment=True)
 
 def classify_type(type_val, model):
-    model_lower = model.lower()
+    model_lower = model.lower().strip()
+    type_val = type_val.lower().strip()
+
     if "tandem" in model_lower or "double" in model_lower or "2-person" in model_lower:
         return "Double"
-    if type_val.lower() == "kayak":
+    if type_val == "kayak":
         return "Single"
-    return type_val
+    if type_val == "sup":
+        return "SUP"
+    return type_val.capitalize()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
