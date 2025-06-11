@@ -105,26 +105,40 @@ def mark_fixed(boat_id):
 @app.route('/add', methods=['GET', 'POST'])
 def add_boat():
     if request.method == 'POST':
+        boat_id = request.form['boat_id']
+
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        # Check if boat_id already exists
+        cursor.execute("SELECT 1 FROM fleet WHERE boat_id = ?", (boat_id,))
+        if cursor.fetchone():
+            conn.close()
+            return "❌ Error: Boat ID already exists. Please choose a different ID."
+
+        # Proceed if it's a new ID
         boat_data = (
-            request.form['boat_id'],
+            boat_id,
             request.form.get('serial_number', ''),
             classify_type(request.form.get('type', ''), request.form.get('model', '')),
             request.form.get('brand', ''),
             request.form.get('model', ''),
             request.form.get('primary_color', ''),
             request.form.get('added_to_fleet', ''),
-            request.form.get('status', 'Active')  # Default to 'Active'
+            request.form.get('status', 'Active')
         )
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
+
         cursor.execute('''
             INSERT INTO fleet (boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', boat_data)
+
         conn.commit()
         conn.close()
         return redirect(url_for('fleet'))
+
     return render_template('add_boat.html')
+
 
 @app.route('/update/<boat_id>', methods=['GET', 'POST'])
 def update_boat(boat_id):
