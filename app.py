@@ -105,17 +105,15 @@ def mark_fixed(boat_id):
 @app.route('/add', methods=['GET', 'POST'])
 def add_boat():
     if request.method == 'POST':
-        raw_type = request.form['type']
-        model = request.form['model']
         boat_data = (
             request.form['boat_id'],
-            request.form['serial_number'],
-            classify_type(raw_type, model),
-            request.form['brand'],
-            request.form['model'],
-            request.form['primary_color'],
-            request.form['added_to_fleet'],
-            request.form['status']
+            request.form.get('serial_number', ''),
+            classify_type(request.form.get('type', ''), request.form.get('model', '')),
+            request.form.get('brand', ''),
+            request.form.get('model', ''),
+            request.form.get('primary_color', ''),
+            request.form.get('added_to_fleet', ''),
+            request.form.get('status', 'Active')  # Default to 'Active'
         )
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
@@ -176,12 +174,10 @@ def export_data():
     with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
         conn = sqlite3.connect('database.db')
         
-        # Export fleet
         fleet_df = pd.read_sql_query("SELECT * FROM fleet", conn)
         fleet_csv = fleet_df.to_csv(index=False)
         zip_file.writestr(f"fleet_export_{now}.csv", fleet_csv)
         
-        # Export damage reports
         report_df = pd.read_sql_query("SELECT * FROM damage_reports", conn)
         report_csv = report_df.to_csv(index=False)
         zip_file.writestr(f"damage_reports_export_{now}.csv", report_csv)
