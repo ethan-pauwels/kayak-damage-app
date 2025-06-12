@@ -1,18 +1,30 @@
 import sqlite3
 import pandas as pd
 
-# Load CSVs (headers are on row 5, which is index 4)
+def classify_type(type_val, model):
+    model = str(model).lower().strip() if not pd.isna(model) else ''
+    type_val = str(type_val).lower().strip()
+
+    if "tandem" in model or "double" in model or "2-person" in model:
+        return "Double"
+    if type_val == "kayak":
+        return "Single"
+    if type_val == "sup":
+        return "SUP"
+    return type_val.capitalize()
+
+# Load CSVs (headers start on row 5)
 kayaks_df = pd.read_csv('Master - Rental Fleet - Kayaks.csv', header=4)
 sups_df = pd.read_csv('Master - Rental Fleet - SUPs.csv', header=4)
 
-# Use the 'Type' column directly from the CSVs
+# Add and normalize 'type' column
 kayaks_df['type'] = kayaks_df['Type']
 sups_df['type'] = sups_df['Type']
 
-# Combine the two DataFrames
+# Combine
 fleet_df = pd.concat([kayaks_df, sups_df], ignore_index=True)
 
-# Rename columns to match database schema
+# Rename columns
 fleet_df = fleet_df.rename(columns={
     'Boat #': 'boat_id',
     'Serial #': 'serial_number',
@@ -22,32 +34,38 @@ fleet_df = fleet_df.rename(columns={
     'Added to Fleet': 'added_to_fleet'
 })
 
-# Select only the needed columns
+# Select only needed columns
 fleet_df = fleet_df[['boat_id', 'serial_number', 'type', 'brand', 'model', 'primary_color', 'added_to_fleet']]
-fleet_df['status'] = 'Active'  # Default status for all boats
+fleet_df['status'] = 'Active'
 
-# Print preview to confirm
+# Normalize types
+fleet_df['type'] = fleet_df.apply(lambda row: classify_type(row['type'], row['model']), axis=1)
+
+# Preview
 print("✅ Preview of fleet data to be inserted:")
 print(fleet_df.head(10))
 
-# Connect to SQLite
+# Connect to DB
 conn = sqlite3.connect('database.db')
 cursor = conn.cursor()
 
-# Create tables
+# Create fleet table with composite uniqueness and new ID PK
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS fleet (
-        boat_id TEXT PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        boat_id TEXT,
         serial_number TEXT,
         type TEXT,
         brand TEXT,
         model TEXT,
         primary_color TEXT,
         added_to_fleet TEXT,
-        status TEXT DEFAULT 'Active'
+        status TEXT DEFAULT 'Active',
+        UNIQUE(boat_id, type)
     )
 ''')
 
+# Create damage_reports table
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS damage_reports (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,17 +76,27 @@ cursor.execute('''
     )
 ''')
 
-# Optional: Clear existing data
+# Optional: Clear and reload fleet table
 cursor.execute('DELETE FROM fleet')
 
-# Insert data
-cursor.executemany('''
-    INSERT OR REPLACE INTO fleet 
-    (boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-''', fleet_df.values.tolist())
+# Insert while handling uniqueness
+inserted = 0
+skipped = 0
+for _, row in fleet_df.iterrows():
+    try:
+        cursor.execute('''
+            INSERT INTO fleet (boat_id, serial_number, type, brand, model, primary_color, added_to_fleet, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            row['boat_id'], row['serial_number'], row['type'], row['brand'],
+            row['model'], row['primary_color'], row['added_to_fleet'], row['status']
+        ))
+        inserted += 1
+    except sqlite3.IntegrityError:
+        skipped += 1
+        print(f"⚠️ Skipped duplicate: {row['type']} {row['boat_id']}")
 
 conn.commit()
 conn.close()
 
-print("✅ Database initialized with correct columns and fresh fleet data.")
+print(f"✅ Database updated. {inserted} boats inserted, {skipped} skipped.")
