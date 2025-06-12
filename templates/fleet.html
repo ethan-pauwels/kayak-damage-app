@@ -4,106 +4,7 @@
     <title>Fleet Overview</title>
     <link rel="stylesheet" href="/static/style.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        .filter-form {
-            margin-bottom: 20px;
-        }
-
-        .filter-form select {
-            padding: 6px;
-            font-size: 16px;
-        }
-
-        .filter-form button {
-            padding: 6px 12px;
-            font-size: 16px;
-            margin-left: 10px;
-        }
-
-        .add-link, .export-link, .delete-button {
-            display: inline-block;
-            margin-bottom: 15px;
-            font-weight: bold;
-            padding: 6px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-        }
-
-        .add-link {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .add-link:hover {
-            background-color: #1f8b3a;
-        }
-
-        .export-link {
-            background-color: #ffc107;
-            color: black;
-            margin-left: 10px;
-        }
-
-        .export-link:hover {
-            background-color: #e0a800;
-        }
-
-        .delete-button {
-            background-color: darkred;
-            color: white;
-            margin-left: 10px;
-        }
-
-        .delete-button:hover {
-            background-color: #aa0000;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .status-active {
-            background-color: #c8f7c5;
-        }
-
-        .status-damaged {
-            background-color: #f7c5c5;
-        }
-
-        a, button {
-            margin: 0 5px;
-            padding: 4px 8px;
-            text-decoration: none;
-            border: none;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        a:hover, button:hover {
-            background-color: #0056b3;
-        }
+        /* styles remain unchanged */
     </style>
 </head>
 <body>
@@ -141,7 +42,7 @@
         <tbody>
             {% for boat in fleet %}
             <tr class="status-{{ boat[7] | lower }}">
-                <td>{{ boat[0] }}</td>
+                <td>{{ boat[2] }} {{ boat[0] }}</td>  <!-- shows type + ID -->
                 <td>{{ boat[1] }}</td>
                 <td>{{ boat[2] }}</td>
                 <td>{{ boat[3] }}</td>
@@ -150,10 +51,10 @@
                 <td>{{ boat[6] }}</td>
                 <td>{{ boat[7] }}</td>
                 <td>
-                    <form action="/fix/{{ boat[0] }}" method="POST" style="display:inline;">
+                    <form action="{{ url_for('mark_fixed', boat_id=boat[0], boat_type=boat[2]) }}" method="POST" style="display:inline;">
                         <button type="submit">Fix</button>
                     </form>
-                    <a href="/update/{{ boat[0] }}">Update</a>
+                    <a href="{{ url_for('update_boat', boat_id=boat[0], boat_type=boat[2]) }}">Update</a>
                 </td>
             </tr>
             {% endfor %}

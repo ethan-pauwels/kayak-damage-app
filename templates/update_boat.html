@@ -6,7 +6,7 @@
 </head>
 <body>
     <h2>Update Boat Info</h2>
-    <form method="POST">
+    <form method="POST" action="{{ url_for('update_boat', boat_id=boat[0], boat_type=boat[2]) }}">
         <label>Serial Number:</label><br>
         <input type="text" name="serial_number" value="{{ boat[1] }}"><br>
 

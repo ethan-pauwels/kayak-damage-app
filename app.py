@@ -93,11 +93,11 @@ def delete_mode():
     conn.close()
     return render_template('delete_mode.html', fleet=fleet_data)
 
-@app.route('/fix/<boat_id>', methods=['POST', 'GET'])
-def mark_fixed(boat_id):
+@app.route('/fix/<boat_type>/<boat_id>', methods=['POST', 'GET'])
+def mark_fixed(boat_type, boat_id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute("UPDATE fleet SET status = 'Active' WHERE boat_id = ?", (boat_id,))
+    cursor.execute("UPDATE fleet SET status = 'Active' WHERE boat_id = ? AND type = ?", (boat_id, boat_type))
     conn.commit()
     conn.close()
     return redirect(url_for('fleet'))
@@ -113,7 +113,6 @@ def add_boat():
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
 
-        # Case-insensitive check for existing boat_id + type
         cursor.execute(
             "SELECT 1 FROM fleet WHERE LOWER(boat_id) = ? AND LOWER(type) = ?",
             (boat_id.lower(), boat_type.lower())
@@ -144,8 +143,8 @@ def add_boat():
 
     return render_template('add_boat.html')
 
-@app.route('/update/<boat_id>', methods=['GET', 'POST'])
-def update_boat(boat_id):
+@app.route('/update/<boat_type>/<boat_id>', methods=['GET', 'POST'])
+def update_boat(boat_type, boat_id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     if request.method == 'POST':
@@ -155,7 +154,7 @@ def update_boat(boat_id):
         cursor.execute('''
             UPDATE fleet
             SET serial_number = ?, type = ?, brand = ?, model = ?, primary_color = ?, added_to_fleet = ?, status = ?
-            WHERE boat_id = ?
+            WHERE boat_id = ? AND type = ?
         ''', (
             request.form['serial_number'],
             updated_type,
@@ -164,22 +163,23 @@ def update_boat(boat_id):
             request.form['primary_color'],
             request.form['added_to_fleet'],
             request.form['status'],
-            boat_id
+            boat_id,
+            boat_type
         ))
         conn.commit()
         conn.close()
         return redirect(url_for('fleet'))
 
-    cursor.execute("SELECT * FROM fleet WHERE boat_id = ?", (boat_id,))
+    cursor.execute("SELECT * FROM fleet WHERE boat_id = ? AND type = ?", (boat_id, boat_type))
     boat = cursor.fetchone()
     conn.close()
     return render_template('update_boat.html', boat=boat)
 
-@app.route('/delete/<boat_id>', methods=['POST'])
-def delete_boat(boat_id):
+@app.route('/delete/<boat_type>/<boat_id>', methods=['POST'])
+def delete_boat(boat_type, boat_id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM fleet WHERE boat_id = ?", (boat_id,))
+    cursor.execute("DELETE FROM fleet WHERE boat_id = ? AND type = ?", (boat_id, boat_type))
     conn.commit()
     conn.close()
     return redirect(url_for('fleet'))

@@ -53,8 +53,8 @@
                 <td>{{ boat[3] }}</td>
                 <td>{{ boat[4] }}</td>
                 <td>
-                    <a href="/delete/{{ boat[0] }}" class="delete-button"
-                       onclick="return confirm('Are you sure you want to delete {{ boat[0] }}?');">Delete</a>
+                    <a href="{{ url_for('delete_boat', boat_id=boat[0], boat_type=boat[2]) }}" class="delete-button"
+                       onclick="return confirm('Are you sure you want to delete {{ boat[2] }} {{ boat[0] }}?');">Delete</a>
                 </td>
             </tr>
             {% endfor %}
