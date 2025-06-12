@@ -29,6 +29,15 @@ def submit():
 
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
+
+    # ✅ Check if the boat exists
+    cursor.execute('SELECT 1 FROM fleet WHERE boat_id = ? AND type = ?', (boat_id, boat_type))
+    exists = cursor.fetchone()
+    if not exists:
+        conn.close()
+        return f"❌ Error: Boat ID {boat_type_raw} {boat_id} not found in the system. Please check your entry."
+
+    # ✅ Proceed with damage report
     cursor.execute('''
         INSERT INTO damage_reports (boat_id, description, reported_by, date_reported)
         VALUES (?, ?, ?, ?)
